@@ -1,7 +1,8 @@
-import { authEnv } from "@ioyou/auth/env";
 import { createEnv } from "@t3-oss/env-core";
 import { vercel } from "@t3-oss/env-core/presets-zod";
 import { z } from "zod";
+
+import { authEnv } from "@ioyou/auth/env";
 
 export const env = createEnv({
   clientPrefix: "VITE_",
