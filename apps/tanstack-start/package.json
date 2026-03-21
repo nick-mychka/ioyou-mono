@@ -30,11 +30,15 @@
     "@trpc/server": "catalog:",
     "@trpc/tanstack-react-query": "catalog:",
     "better-auth": "catalog:",
+    "date-fns": "catalog:",
+    "lucide-react": "catalog:",
     "nitro": "3.0.1-alpha.1",
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
+    "sonner": "catalog:",
     "superjson": "2.2.3",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "zustand": "^5.0.11"
   },
   "devDependencies": {
     "@ioyou/eslint-config": "workspace:*",
