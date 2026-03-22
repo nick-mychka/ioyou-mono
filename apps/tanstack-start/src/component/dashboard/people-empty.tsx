@@ -1,15 +1,29 @@
 import { Users } from "lucide-react";
 
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@ioyou/ui/empty";
+
+import { AddPersonButton } from "./add-person/add-person-button";
+
 export function PeopleEmpty() {
   return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-3 p-8">
-      <Users className="text-muted-foreground size-10" />
-      <div className="text-center">
-        <p className="font-medium">No people yet</p>
-        <p className="text-muted-foreground text-sm">
-          Add someone to start tracking loans and debts
-        </p>
-      </div>
-    </div>
+    <Empty>
+      <EmptyMedia variant="icon">
+        <Users />
+      </EmptyMedia>
+      <EmptyHeader>
+        <EmptyTitle>No people yet</EmptyTitle>
+        <EmptyDescription>
+          Start by adding someone you owe money to or who owes you. Track
+          balances and settle up easily.
+        </EmptyDescription>
+      </EmptyHeader>
+      <AddPersonButton />
+    </Empty>
   );
 }

@@ -129,14 +129,14 @@ export function AddRecordDialog({
               className="flex-1 data-[state=on]:bg-red-400/25"
             >
               Borrow
-              <BanknoteArrowDown className="size-4" />
+              <BanknoteArrowDown />
             </ToggleGroupItem>
             <ToggleGroupItem
               value="loan"
               className="flex-1 data-[state=on]:bg-green-400/25"
             >
               Lend
-              <BanknoteArrowUp className="size-4" />
+              <BanknoteArrowUp />
             </ToggleGroupItem>
           </ToggleGroup>
 
@@ -245,7 +245,7 @@ export function AddRecordDialog({
             disabled={isSubmitDisabled}
             className="min-w-32"
           >
-            {createRecord.isPending && <Spinner className="size-4" />}
+            {createRecord.isPending && <Spinner />}
             Add
           </Button>
         </DialogFooter>

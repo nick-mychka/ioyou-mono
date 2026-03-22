@@ -68,7 +68,7 @@ export function DeleteRecordDialog({
             onClick={handleDelete}
             disabled={deleteRecord.isPending}
           >
-            {deleteRecord.isPending && <Spinner className="size-4" />}
+            {deleteRecord.isPending && <Spinner />}
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>

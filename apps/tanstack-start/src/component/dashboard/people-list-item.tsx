@@ -65,7 +65,7 @@ export function PeopleListItem({ person }: { person: Person }) {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon-sm">
-                <EllipsisVertical className="size-4" />
+                <EllipsisVertical />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
@@ -73,7 +73,7 @@ export function PeopleListItem({ person }: { person: Person }) {
                 variant="destructive"
                 onClick={() => setIsDeleteOpen(true)}
               >
-                <Trash2 className="size-4" />
+                <Trash2 />
                 Delete
               </DropdownMenuItem>
             </DropdownMenuContent>

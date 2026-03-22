@@ -31,7 +31,7 @@ export function AppHeader() {
                 await navigate({ to: "/login" });
               }}
             >
-              <LogOut className="size-4" />
+              <LogOut />
             </Button>
           </div>
         )}

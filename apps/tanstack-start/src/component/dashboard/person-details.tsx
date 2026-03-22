@@ -105,7 +105,7 @@ export function PersonDetails({ personId }: { personId: string }) {
             className="self-start"
             onClick={() => setIsDeletePersonOpen(true)}
           >
-            <Trash2 className="size-4" />
+            <Trash2 />
           </Button>
         )}
       </div>
@@ -168,7 +168,7 @@ export function PersonDetails({ personId }: { personId: string }) {
               Records ({records.length})
             </span>
             <Button size="sm" onClick={() => setIsAddRecordOpen(true)}>
-              <Plus className="size-4" />
+              <Plus />
               Add Record
             </Button>
           </div>

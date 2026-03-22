@@ -71,7 +71,7 @@ export function RecordCard({
                   variant="destructive"
                   onClick={() => setIsDeleteOpen(true)}
                 >
-                  <Trash2 className="size-4" />
+                  <Trash2 />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>

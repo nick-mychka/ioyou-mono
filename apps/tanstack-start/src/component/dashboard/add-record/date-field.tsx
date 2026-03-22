@@ -23,7 +23,7 @@ export function DateField({
             !value && "text-muted-foreground",
           )}
         >
-          <CalendarIcon className="size-4" />
+          <CalendarIcon />
           {value ? format(value, "MMMM d, yyyy") : "Pick a date"}
         </Button>
       </PopoverTrigger>

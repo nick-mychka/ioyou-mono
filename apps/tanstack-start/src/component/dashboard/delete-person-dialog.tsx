@@ -70,7 +70,7 @@ export function DeletePersonDialog({
             onClick={handleDelete}
             disabled={deletePerson.isPending}
           >
-            {deletePerson.isPending && <Spinner className="size-4" />}
+            {deletePerson.isPending && <Spinner />}
             Delete
           </AlertDialogAction>
         </AlertDialogFooter>
