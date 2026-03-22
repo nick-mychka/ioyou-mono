@@ -11,9 +11,9 @@ import { Skeleton } from "@ioyou/ui/skeleton";
 import { useTRPC } from "~/lib/trpc";
 import { AddRecordDialog } from "./add-record/add-record-dialog";
 import { DeletePersonDialog } from "./delete-person-dialog";
+import { RecordCard } from "./person-view/record-card";
+import { RecordTotalCard } from "./person-view/record-total-card";
 import { RecordsEmpty } from "./person-view/records-empty";
-import { RecordCard } from "./record-card";
-import { RecordTotalCard } from "./record-total-card";
 
 export function PersonDetails({ personId }: { personId: string }) {
   const trpc = useTRPC();

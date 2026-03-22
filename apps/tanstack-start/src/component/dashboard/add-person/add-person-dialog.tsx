@@ -22,9 +22,9 @@ interface ContentProps {
   onOpenChange: (open: boolean) => void;
 }
 
-type Props = ContentProps & {
+interface Props extends ContentProps {
   open: boolean;
-};
+}
 
 export function AddPersonDialog({ open, onOpenChange }: Props) {
   return (

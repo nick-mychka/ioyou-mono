@@ -15,27 +15,52 @@ import { Spinner } from "@ioyou/ui/spinner";
 
 import { useTRPC } from "~/lib/trpc";
 
+interface ContentProps {
+  personId: string;
+  recordId: string;
+  onOpenChange: (open: boolean) => void;
+}
+
+interface Props extends ContentProps {
+  open: boolean;
+}
+
 export function DeleteRecordDialog({
   open,
   onOpenChange,
   personId,
   recordId,
-}: {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  personId: string;
-  recordId: string;
-}) {
+}: Props) {
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <DeleteRecordDialogContent
+          onOpenChange={onOpenChange}
+          personId={personId}
+          recordId={recordId}
+        />
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+function DeleteRecordDialogContent({
+  onOpenChange,
+  personId,
+  recordId,
+}: ContentProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
   const deleteRecord = useMutation(
     trpc.record.delete.mutationOptions({
-      onSuccess: () => {
+      onSuccess: async () => {
         toast.success("Record deleted successfully");
-        void queryClient.invalidateQueries({
+
+        await queryClient.invalidateQueries({
           queryKey: trpc.record.allByPerson.queryKey({ personId }),
         });
+
         onOpenChange(false);
       },
       onError: () => {
@@ -50,29 +75,26 @@ export function DeleteRecordDialog({
   };
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This record will be permanently deleted. This action cannot be
-            undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => onOpenChange(false)}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            variant="destructive"
-            onClick={handleDelete}
-            disabled={deleteRecord.isPending}
-          >
-            {deleteRecord.isPending && <Spinner />}
-            Delete
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+        <AlertDialogDescription>
+          This record will be permanently deleted. This action cannot be undone.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel onClick={() => onOpenChange(false)}>
+          Cancel
+        </AlertDialogCancel>
+        <AlertDialogAction
+          variant="destructive"
+          onClick={handleDelete}
+          disabled={deleteRecord.isPending}
+        >
+          {deleteRecord.isPending && <Spinner />}
+          Delete
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </>
   );
 }

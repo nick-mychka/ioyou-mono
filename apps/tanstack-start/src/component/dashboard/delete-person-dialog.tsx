@@ -21,9 +21,9 @@ interface ContentProps {
   personId: string;
 }
 
-type Props = ContentProps & {
+interface Props extends ContentProps {
   open: boolean;
-};
+}
 
 export function DeletePersonDialog({ open, onOpenChange, personId }: Props) {
   return (
