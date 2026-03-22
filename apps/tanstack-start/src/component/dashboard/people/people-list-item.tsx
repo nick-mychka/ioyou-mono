@@ -13,7 +13,7 @@ import {
 import { Skeleton } from "@ioyou/ui/skeleton";
 
 import { usePersonStore } from "~/store/use-person-store";
-import { DeletePersonDialog } from "./delete-person-dialog";
+import { DeletePersonDialog } from "../delete-person-dialog";
 
 interface Person {
   id: string;

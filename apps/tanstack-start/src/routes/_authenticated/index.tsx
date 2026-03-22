@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 
 import { Separator } from "@ioyou/ui/separator";
 
-import { PeopleSidebar } from "~/component/dashboard/people-sidebar";
-import { PersonView } from "~/component/dashboard/person-view";
+import { PeopleSidebar } from "~/component/dashboard/people/people-sidebar";
+import { PersonView } from "~/component/dashboard/person-view/person-view";
 
 export const Route = createFileRoute("/_authenticated/")({
   component: DashboardPage,

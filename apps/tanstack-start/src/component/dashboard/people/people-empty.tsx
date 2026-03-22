@@ -8,7 +8,7 @@ import {
   EmptyTitle,
 } from "@ioyou/ui/empty";
 
-import { AddPersonButton } from "./add-person/add-person-button";
+import { AddPersonButton } from "../add-person/add-person-button";
 
 export function PeopleEmpty() {
   return (

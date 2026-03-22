@@ -13,7 +13,7 @@ import {
 } from "@ioyou/ui/dropdown-menu";
 
 import { formatAmount } from "~/lib/format";
-import { DeleteRecordDialog } from "./delete-record-dialog";
+import { DeleteRecordDialog } from "../delete-record-dialog";
 
 interface RecordWithRelations {
   id: string;

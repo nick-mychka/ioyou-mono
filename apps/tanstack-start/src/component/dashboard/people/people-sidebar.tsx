@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@ioyou/ui/skeleton";
 
 import { useTRPC } from "~/lib/trpc";
-import { AddPersonButton } from "./add-person/add-person-button";
+import { AddPersonButton } from "../add-person/add-person-button";
 import { PeopleEmpty } from "./people-empty";
 import { PeopleList } from "./people-list";
 

@@ -1,5 +1,5 @@
 import { usePersonStore } from "~/store/use-person-store";
-import { PersonDetails } from "./person-details";
+import { PersonDetails } from "../person-details";
 import { PersonUnselected } from "./person-unselected";
 
 export function PersonView() {
