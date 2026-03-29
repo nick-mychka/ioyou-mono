@@ -22,13 +22,14 @@
     "@ioyou/db": "workspace:*",
     "@ioyou/validators": "workspace:*",
     "@trpc/server": "catalog:",
-    "superjson": "2.2.3",
+    "superjson": "2.2.6",
     "zod": "catalog:"
   },
   "devDependencies": {
     "@ioyou/eslint-config": "workspace:*",
     "@ioyou/prettier-config": "workspace:*",
     "@ioyou/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

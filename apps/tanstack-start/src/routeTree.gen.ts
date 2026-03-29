@@ -41,8 +41,8 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/login': typeof LoginRoute
   '/': typeof AuthenticatedIndexRoute
+  '/login': typeof LoginRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
 }
@@ -62,7 +62,7 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/login' | '/' | '/api/auth/$' | '/api/trpc/$'
+  fullPaths: '/' | '/login' | '/api/auth/$' | '/api/trpc/$'
   fileRoutesByTo: FileRoutesByTo
   to: '/login' | '/' | '/api/auth/$' | '/api/trpc/$'
   id:
@@ -93,7 +93,7 @@ declare module '@tanstack/react-router' {
     '/_authenticated': {
       id: '/_authenticated'
       path: ''
-      fullPath: ''
+      fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }

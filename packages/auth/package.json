@@ -19,7 +19,7 @@
   "dependencies": {
     "@better-auth/expo": "catalog:",
     "@ioyou/db": "workspace:*",
-    "@t3-oss/env-core": "^0.13.8",
+    "@t3-oss/env-core": "^0.13.11",
     "better-auth": "catalog:",
     "zod": "catalog:"
   },
@@ -28,6 +28,7 @@
     "@ioyou/eslint-config": "workspace:*",
     "@ioyou/prettier-config": "workspace:*",
     "@ioyou/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"
