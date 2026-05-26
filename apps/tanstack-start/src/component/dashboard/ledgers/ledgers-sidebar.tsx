@@ -3,38 +3,38 @@ import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@ioyou/ui/skeleton";
 
 import { useTRPC } from "~/lib/trpc";
-import { AddPersonButton } from "../add-person/add-person-button";
-import { PeopleEmpty } from "./people-empty";
-import { PeopleList } from "./people-list";
+import { AddLedgerButton } from "../add-ledger/add-ledger-button";
+import { LedgerList } from "./ledger-list";
+import { LedgersEmpty } from "./ledgers-empty";
 
-export function PeopleSidebar() {
+export function LedgersSidebar() {
   const trpc = useTRPC();
   const { data, isLoading, isSuccess } = useQuery(
-    trpc.person.all.queryOptions(),
+    trpc.ledger.list.queryOptions(),
   );
 
-  const hasPeople = isSuccess && data.length > 0;
+  const hasLedgers = isSuccess && data.length > 0;
 
   return (
     <section className="flex flex-col">
-      {isLoading || hasPeople ? (
+      {isLoading || hasLedgers ? (
         <>
           <header className="flex items-center justify-between px-6 py-8">
             {isLoading ? (
-              <Skeleton className="h-8 w-19" />
+              <Skeleton className="h-8 w-24" />
             ) : (
-              <h2 className="text-2xl font-semibold">People</h2>
+              <h2 className="text-2xl font-semibold">Ledgers</h2>
             )}
             {isLoading ? (
               <Skeleton className="h-9 w-31" />
             ) : (
-              <AddPersonButton />
+              <AddLedgerButton />
             )}
           </header>
-          <PeopleList people={data} isLoading={isLoading} />
+          <LedgerList ledgers={data} isLoading={isLoading} />
         </>
       ) : (
-        <PeopleEmpty />
+        <LedgersEmpty />
       )}
     </section>
   );

@@ -3,19 +3,19 @@ import { Plus } from "lucide-react";
 
 import { Button } from "@ioyou/ui/button";
 
-import { AddPersonDialog } from "./add-person-dialog";
+import { AddLedgerDialog } from "./add-ledger-dialog";
 
-export function AddPersonButton() {
+export function AddLedgerButton() {
   const [isAddOpen, setIsAddOpen] = useState(false);
 
   return (
     <>
       <Button onClick={() => setIsAddOpen(true)}>
         <Plus />
-        Add Person
+        Add Ledger
       </Button>
 
-      <AddPersonDialog open={isAddOpen} onOpenChange={setIsAddOpen} />
+      <AddLedgerDialog open={isAddOpen} onOpenChange={setIsAddOpen} />
     </>
   );
 }

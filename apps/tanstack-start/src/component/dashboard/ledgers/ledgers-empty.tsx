@@ -8,22 +8,22 @@ import {
   EmptyTitle,
 } from "@ioyou/ui/empty";
 
-import { AddPersonButton } from "../add-person/add-person-button";
+import { AddLedgerButton } from "../add-ledger/add-ledger-button";
 
-export function PeopleEmpty() {
+export function LedgersEmpty() {
   return (
     <Empty>
       <EmptyMedia variant="icon">
         <Users />
       </EmptyMedia>
       <EmptyHeader>
-        <EmptyTitle>No people yet</EmptyTitle>
+        <EmptyTitle>No ledgers yet</EmptyTitle>
         <EmptyDescription>
-          Start by adding someone you owe money to or who owes you. Track
-          balances and settle up easily.
+          Start by creating a ledger for someone you owe money to or who owes
+          you. Track balances and settle up easily.
         </EmptyDescription>
       </EmptyHeader>
-      <AddPersonButton />
+      <AddLedgerButton />
     </Empty>
   );
 }

@@ -2,59 +2,52 @@ import { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Plus, Trash2 } from "lucide-react";
 
+import type { BalanceRecord } from "@ioyou/api/balance";
+import { computeLedgerBalance } from "@ioyou/api/balance";
 import { Avatar, AvatarFallback } from "@ioyou/ui/avatar";
 import { Button } from "@ioyou/ui/button";
 import { Card, CardHeader } from "@ioyou/ui/card";
 import { Separator } from "@ioyou/ui/separator";
 import { Skeleton } from "@ioyou/ui/skeleton";
 
+import { authClient } from "~/auth/client";
 import { useTRPC } from "~/lib/trpc";
-import { AddRecordDialog } from "./add-record/add-record-dialog";
-import { DeletePersonDialog } from "./delete-person-dialog";
-import { RecordCard } from "./person-view/record-card";
-import { RecordTotalCard } from "./person-view/record-total-card";
-import { RecordsEmpty } from "./person-view/records-empty";
+import { RecordDialog } from "../add-record/record-dialog";
+import { DeleteLedgerDialog } from "../delete-ledger-dialog";
+import { BalanceCard } from "./balance-card";
+import { RecordCard } from "./record-card";
+import { RecordsEmpty } from "./records-empty";
 
-export function PersonDetails({ personId }: { personId: string }) {
+export function LedgerDetails({ ledgerId }: { ledgerId: string }) {
   const trpc = useTRPC();
+  const { data: session } = authClient.useSession();
+  const viewerId = session?.user.id ?? "";
 
-  const { data: person, isLoading: isPersonLoading } = useQuery(
-    trpc.person.byId.queryOptions({ id: personId }),
+  const { data: ledger, isLoading: isLedgerLoading } = useQuery(
+    trpc.ledger.byId.queryOptions({ id: ledgerId }),
   );
 
   const { data: records, isLoading: isRecordsLoading } = useQuery(
-    trpc.record.allByPerson.queryOptions({ personId }),
+    trpc.record.allByLedger.queryOptions({ ledgerId }),
   );
 
   const [isAddRecordOpen, setIsAddRecordOpen] = useState(false);
-  const [isDeletePersonOpen, setIsDeletePersonOpen] = useState(false);
+  const [isDeleteLedgerOpen, setIsDeleteLedgerOpen] = useState(false);
 
-  const totals = useMemo(() => {
-    if (!records || records.length === 0) return [];
+  const name = ledger?.name ?? "Untitled";
 
-    const grouped = new Map<
-      string,
-      { kind: "loan" | "debt"; currencyCode: string; total: number }
-    >();
-
-    for (const record of records) {
-      const key = `${record.kind}-${record.currency.id}`;
-      const existing = grouped.get(key);
-      if (existing) {
-        existing.total += Number(record.amount);
-      } else {
-        grouped.set(key, {
-          kind: record.kind,
-          currencyCode: record.currency.code,
-          total: Number(record.amount),
-        });
-      }
-    }
-
-    return Array.from(grouped.values()).sort((a, b) =>
-      a.kind.localeCompare(b.kind),
-    );
-  }, [records]);
+  const balance = useMemo(() => {
+    if (!records) return [];
+    const balanceRecords: BalanceRecord[] = records.map((r) => ({
+      id: r.id,
+      amount: r.amount,
+      kind: r.kind,
+      createdBy: r.createdBy,
+      confirmationStatus: r.confirmationStatus,
+      currencyCode: r.currency.code,
+    }));
+    return computeLedgerBalance(balanceRecords, viewerId).byCurrency;
+  }, [records, viewerId]);
 
   const lendRecords = useMemo(
     () => records?.filter((r) => r.kind === "loan") ?? [],
@@ -68,42 +61,32 @@ export function PersonDetails({ personId }: { personId: string }) {
 
   return (
     <div className="flex flex-col gap-6">
-      {/* Person header */}
+      {/* Ledger header */}
       <div className="flex items-center gap-4">
         <div className="shrink-0">
-          {isPersonLoading || !person ? (
+          {isLedgerLoading || !ledger ? (
             <Skeleton className="size-16 rounded-full" />
           ) : (
             <Avatar size="lg" className="size-16">
               <AvatarFallback className="text-2xl">
-                {person.name.charAt(0)}
+                {name.charAt(0)}
               </AvatarFallback>
             </Avatar>
           )}
         </div>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
-          {isPersonLoading || !person ? (
-            <>
-              <Skeleton className="h-7 w-32" />
-              <Skeleton className="h-4 w-48" />
-            </>
+          {isLedgerLoading || !ledger ? (
+            <Skeleton className="h-7 w-32" />
           ) : (
-            <>
-              <h2 className="text-2xl font-semibold">{person.name}</h2>
-              {person.description && (
-                <p className="text-muted-foreground text-sm">
-                  {person.description}
-                </p>
-              )}
-            </>
+            <h2 className="text-2xl font-semibold">{name}</h2>
           )}
         </div>
-        {!isPersonLoading && person && (
+        {!isLedgerLoading && ledger && (
           <Button
             variant="ghost"
             size="icon"
             className="self-start"
-            onClick={() => setIsDeletePersonOpen(true)}
+            onClick={() => setIsDeleteLedgerOpen(true)}
           >
             <Trash2 />
           </Button>
@@ -153,11 +136,15 @@ export function PersonDetails({ personId }: { personId: string }) {
       {/* Records content */}
       {!isRecordsLoading && records && records.length > 0 && (
         <>
-          {/* Totals */}
-          {totals.length > 0 && (
+          {/* Net balance per currency */}
+          {balance.length > 0 && (
             <div className="flex flex-wrap gap-4">
-              {totals.map((total, i) => (
-                <RecordTotalCard key={i} total={total} />
+              {balance.map((b) => (
+                <BalanceCard
+                  key={b.currencyCode}
+                  balance={b}
+                  counterpartyName={name}
+                />
               ))}
             </div>
           )}
@@ -184,7 +171,7 @@ export function PersonDetails({ personId }: { personId: string }) {
                   <RecordCard
                     key={record.id}
                     record={record}
-                    personId={personId}
+                    ledgerId={ledgerId}
                   />
                 ))}
               </div>
@@ -202,7 +189,7 @@ export function PersonDetails({ personId }: { personId: string }) {
                   <RecordCard
                     key={record.id}
                     record={record}
-                    personId={personId}
+                    ledgerId={ledgerId}
                   />
                 ))}
               </div>
@@ -211,18 +198,16 @@ export function PersonDetails({ personId }: { personId: string }) {
         </>
       )}
 
-      {person && (
-        <AddRecordDialog
-          open={isAddRecordOpen}
-          onOpenChange={setIsAddRecordOpen}
-          personId={personId}
-        />
-      )}
+      <RecordDialog
+        open={isAddRecordOpen}
+        onOpenChange={setIsAddRecordOpen}
+        ledgerId={ledgerId}
+      />
 
-      <DeletePersonDialog
-        open={isDeletePersonOpen}
-        onOpenChange={setIsDeletePersonOpen}
-        personId={personId}
+      <DeleteLedgerDialog
+        open={isDeleteLedgerOpen}
+        onOpenChange={setIsDeleteLedgerOpen}
+        ledgerId={ledgerId}
       />
     </div>
   );

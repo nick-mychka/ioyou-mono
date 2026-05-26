@@ -6,6 +6,10 @@
     ".": {
       "types": "./dist/index.d.ts",
       "default": "./src/index.ts"
+    },
+    "./balance": {
+      "types": "./dist/balance.d.ts",
+      "default": "./src/balance.ts"
     }
   },
   "license": "MIT",

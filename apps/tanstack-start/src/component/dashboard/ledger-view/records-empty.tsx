@@ -18,8 +18,8 @@ export function RecordsEmpty({ onAddRecord }: { onAddRecord: () => void }) {
       <EmptyHeader>
         <EmptyTitle>No records yet</EmptyTitle>
         <EmptyDescription>
-          Add your first record to start tracking loans and debts for this
-          person.
+          Add your first record to start tracking loans and debts in this
+          ledger.
         </EmptyDescription>
       </EmptyHeader>
       <Button onClick={onAddRecord}>

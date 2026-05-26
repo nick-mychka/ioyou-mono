@@ -8,16 +8,16 @@ import {
   EmptyTitle,
 } from "@ioyou/ui/empty";
 
-export function PersonUnselected() {
+export function LedgerUnselected() {
   return (
-    <Empty>
+    <Empty className="h-full">
       <EmptyMedia variant="icon">
         <BookUser />
       </EmptyMedia>
       <EmptyHeader>
-        <EmptyTitle>No person selected</EmptyTitle>
+        <EmptyTitle>No ledger selected</EmptyTitle>
         <EmptyDescription>
-          Select someone from the list to view details
+          Select a ledger from the list to view its balance and records.
         </EmptyDescription>
       </EmptyHeader>
     </Empty>

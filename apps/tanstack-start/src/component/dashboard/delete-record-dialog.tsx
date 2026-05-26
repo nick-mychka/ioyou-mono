@@ -16,7 +16,7 @@ import { Spinner } from "@ioyou/ui/spinner";
 import { useTRPC } from "~/lib/trpc";
 
 interface ContentProps {
-  personId: string;
+  ledgerId: string;
   recordId: string;
   onOpenChange: (open: boolean) => void;
 }
@@ -28,7 +28,7 @@ interface Props extends ContentProps {
 export function DeleteRecordDialog({
   open,
   onOpenChange,
-  personId,
+  ledgerId,
   recordId,
 }: Props) {
   return (
@@ -36,7 +36,7 @@ export function DeleteRecordDialog({
       <AlertDialogContent>
         <DeleteRecordDialogContent
           onOpenChange={onOpenChange}
-          personId={personId}
+          ledgerId={ledgerId}
           recordId={recordId}
         />
       </AlertDialogContent>
@@ -46,7 +46,7 @@ export function DeleteRecordDialog({
 
 function DeleteRecordDialogContent({
   onOpenChange,
-  personId,
+  ledgerId,
   recordId,
 }: ContentProps) {
   const trpc = useTRPC();
@@ -57,9 +57,14 @@ function DeleteRecordDialogContent({
       onSuccess: async () => {
         toast.success("Record deleted successfully");
 
-        await queryClient.invalidateQueries({
-          queryKey: trpc.record.allByPerson.queryKey({ personId }),
-        });
+        await Promise.all([
+          queryClient.invalidateQueries({
+            queryKey: trpc.record.allByLedger.queryKey({ ledgerId }),
+          }),
+          queryClient.invalidateQueries({
+            queryKey: trpc.ledger.list.queryKey(),
+          }),
+        ]);
 
         onOpenChange(false);
       },
@@ -71,7 +76,7 @@ function DeleteRecordDialogContent({
 
   const handleDelete = () => {
     if (deleteRecord.isPending) return;
-    deleteRecord.mutate({ id: recordId, personId });
+    deleteRecord.mutate({ id: recordId });
   };
 
   return (

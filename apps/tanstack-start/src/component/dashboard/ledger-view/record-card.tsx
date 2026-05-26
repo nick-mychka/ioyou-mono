@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { format, isBefore, startOfDay } from "date-fns";
-import { CalendarClock, EllipsisVertical, Trash2 } from "lucide-react";
+import { CalendarClock, EllipsisVertical, Pencil, Trash2 } from "lucide-react";
 
+import type { RouterOutputs } from "@ioyou/api";
 import { cn } from "@ioyou/ui";
 import { Button } from "@ioyou/ui/button";
 import { Card, CardDescription, CardHeader, CardTitle } from "@ioyou/ui/card";
@@ -13,28 +14,20 @@ import {
 } from "@ioyou/ui/dropdown-menu";
 
 import { formatAmount } from "~/lib/format";
+import { RecordDialog } from "../add-record/record-dialog";
 import { DeleteRecordDialog } from "../delete-record-dialog";
 
-interface RecordWithRelations {
-  id: string;
-  amount: string;
-  kind: "loan" | "debt";
-  loanDate: Date;
-  dueDate: Date | null;
-  note: string | null;
-  personId: string;
-  currency: { id: string; code: string };
-  status: { id: string; code: string };
-}
+type LedgerRecord = RouterOutputs["record"]["allByLedger"][number];
 
 export function RecordCard({
   record,
-  personId,
+  ledgerId,
 }: {
-  record: RecordWithRelations;
-  personId: string;
+  record: LedgerRecord;
+  ledgerId: string;
 }) {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
 
   const isOverdue =
     record.dueDate && isBefore(record.dueDate, startOfDay(new Date()));
@@ -67,6 +60,10 @@ export function RecordCard({
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => setIsEditOpen(true)}>
+                  <Pencil />
+                  Edit
+                </DropdownMenuItem>
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => setIsDeleteOpen(true)}
@@ -96,10 +93,17 @@ export function RecordCard({
         )}
       </Card>
 
+      <RecordDialog
+        open={isEditOpen}
+        onOpenChange={setIsEditOpen}
+        ledgerId={ledgerId}
+        record={record}
+      />
+
       <DeleteRecordDialog
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
-        personId={personId}
+        ledgerId={ledgerId}
         recordId={record.id}
       />
     </>

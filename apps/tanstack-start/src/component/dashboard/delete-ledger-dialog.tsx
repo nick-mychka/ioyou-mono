@@ -14,23 +14,23 @@ import {
 import { Spinner } from "@ioyou/ui/spinner";
 
 import { useTRPC } from "~/lib/trpc";
-import { usePersonStore } from "~/store/use-person-store";
+import { useLedgerStore } from "~/store/use-ledger-store";
 
 interface ContentProps {
   onOpenChange: (open: boolean) => void;
-  personId: string;
+  ledgerId: string;
 }
 
 interface Props extends ContentProps {
   open: boolean;
 }
 
-export function DeletePersonDialog({ open, onOpenChange, personId }: Props) {
+export function DeleteLedgerDialog({ open, onOpenChange, ledgerId }: Props) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>
-        <DeletePersonDialogContent
-          personId={personId}
+        <DeleteLedgerDialogContent
+          ledgerId={ledgerId}
           onOpenChange={onOpenChange}
         />
       </AlertDialogContent>
@@ -38,35 +38,35 @@ export function DeletePersonDialog({ open, onOpenChange, personId }: Props) {
   );
 }
 
-function DeletePersonDialogContent({ personId, onOpenChange }: ContentProps) {
+function DeleteLedgerDialogContent({ ledgerId, onOpenChange }: ContentProps) {
   const trpc = useTRPC();
   const queryClient = useQueryClient();
 
-  const resetPersonId = usePersonStore((s) => s.resetPersonId);
-  const selectedPersonId = usePersonStore((s) => s.selectedPersonId);
+  const resetLedgerId = useLedgerStore((s) => s.resetLedgerId);
+  const selectedLedgerId = useLedgerStore((s) => s.selectedLedgerId);
 
-  const deletePerson = useMutation(
-    trpc.person.delete.mutationOptions({
+  const deleteLedger = useMutation(
+    trpc.ledger.delete.mutationOptions({
       onSuccess: async () => {
-        toast.success("Person deleted successfully");
+        toast.success("Ledger deleted successfully");
 
-        if (selectedPersonId === personId) resetPersonId();
+        if (selectedLedgerId === ledgerId) resetLedgerId();
 
         await queryClient.invalidateQueries({
-          queryKey: trpc.person.all.queryKey(),
+          queryKey: trpc.ledger.list.queryKey(),
         });
 
         onOpenChange(false);
       },
       onError: () => {
-        toast.error("Failed to delete person");
+        toast.error("Failed to delete ledger");
       },
     }),
   );
 
   const handleDelete = () => {
-    if (deletePerson.isPending) return;
-    deletePerson.mutate({ id: personId });
+    if (deleteLedger.isPending) return;
+    deleteLedger.mutate({ id: ledgerId });
   };
 
   return (
@@ -74,8 +74,8 @@ function DeletePersonDialogContent({ personId, onOpenChange }: ContentProps) {
       <AlertDialogHeader>
         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
         <AlertDialogDescription>
-          This person will be permanently deleted from your list. This action
-          cannot be undone.
+          This ledger and all of its records will be permanently deleted. This
+          action cannot be undone.
         </AlertDialogDescription>
       </AlertDialogHeader>
       <AlertDialogFooter>
@@ -85,9 +85,9 @@ function DeletePersonDialogContent({ personId, onOpenChange }: ContentProps) {
         <AlertDialogAction
           variant="destructive"
           onClick={handleDelete}
-          disabled={deletePerson.isPending}
+          disabled={deleteLedger.isPending}
         >
-          {deletePerson.isPending && <Spinner />}
+          {deleteLedger.isPending && <Spinner />}
           Delete
         </AlertDialogAction>
       </AlertDialogFooter>

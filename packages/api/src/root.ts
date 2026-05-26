@@ -1,6 +1,6 @@
 import { authRouter } from "./router/auth";
 import { currencyRouter } from "./router/currency";
-import { personRouter } from "./router/person";
+import { ledgerRouter } from "./router/ledger";
 import { recordRouter } from "./router/record";
 import { recordStatusRouter } from "./router/recordStatus";
 import { createTRPCRouter } from "./trpc";
@@ -8,7 +8,7 @@ import { createTRPCRouter } from "./trpc";
 export const appRouter = createTRPCRouter({
   auth: authRouter,
   currency: currencyRouter,
-  person: personRouter,
+  ledger: ledgerRouter,
   record: recordRouter,
   recordStatus: recordStatusRouter,
 });

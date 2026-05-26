@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { EllipsisVertical, Trash2 } from "lucide-react";
 
+import type { RouterOutputs } from "@ioyou/api";
 import { cn } from "@ioyou/ui";
 import { Avatar, AvatarFallback } from "@ioyou/ui/avatar";
 import { Button } from "@ioyou/ui/button";
@@ -12,16 +13,13 @@ import {
 } from "@ioyou/ui/dropdown-menu";
 import { Skeleton } from "@ioyou/ui/skeleton";
 
-import { usePersonStore } from "~/store/use-person-store";
-import { DeletePersonDialog } from "../delete-person-dialog";
+import { toBalanceLines } from "~/lib/balance";
+import { useLedgerStore } from "~/store/use-ledger-store";
+import { DeleteLedgerDialog } from "../delete-ledger-dialog";
 
-interface Person {
-  id: string;
-  name: string;
-  description: string | null;
-}
+type Ledger = RouterOutputs["ledger"]["list"][number];
 
-export function PeopleListItemSkeleton() {
+export function LedgerListItemSkeleton() {
   return (
     <div className="flex items-center gap-3 rounded-lg p-3">
       <Skeleton className="size-8 rounded-full" />
@@ -33,12 +31,17 @@ export function PeopleListItemSkeleton() {
   );
 }
 
-export function PeopleListItem({ person }: { person: Person }) {
-  const selectedPersonId = usePersonStore((s) => s.selectedPersonId);
-  const togglePersonId = usePersonStore((s) => s.togglePersonId);
-  const isSelected = selectedPersonId === person.id;
+export function LedgerListItem({ ledger }: { ledger: Ledger }) {
+  const selectedLedgerId = useLedgerStore((s) => s.selectedLedgerId);
+  const toggleLedgerId = useLedgerStore((s) => s.toggleLedgerId);
+  const isSelected = selectedLedgerId === ledger.id;
 
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+
+  const name = ledger.name ?? "Untitled";
+  const lines = toBalanceLines(ledger.balance, name).filter(
+    (l) => l.tone !== "settled",
+  );
 
   return (
     <>
@@ -48,16 +51,20 @@ export function PeopleListItem({ person }: { person: Person }) {
           isSelected &&
             "bg-primary/5 ring-primary/25 shadow-primary/12 shadow-lg ring-2",
         )}
-        onClick={() => togglePersonId(person.id)}
+        onClick={() => toggleLedgerId(ledger.id)}
       >
         <Avatar>
-          <AvatarFallback>{person.name.charAt(0)}</AvatarFallback>
+          <AvatarFallback>{name.charAt(0)}</AvatarFallback>
         </Avatar>
         <div className="flex min-w-0 flex-1 flex-col">
-          <span className="text-sm font-medium">{person.name}</span>
-          {person.description && (
+          <span className="text-sm font-medium">{name}</span>
+          {lines.length > 0 ? (
             <span className="text-muted-foreground truncate text-xs">
-              {person.description}
+              {lines.map((l) => l.text).join(" · ")}
+            </span>
+          ) : (
+            <span className="text-muted-foreground truncate text-xs">
+              Settled
             </span>
           )}
         </div>
@@ -81,10 +88,10 @@ export function PeopleListItem({ person }: { person: Person }) {
         </div>
       </div>
 
-      <DeletePersonDialog
+      <DeleteLedgerDialog
         open={isDeleteOpen}
         onOpenChange={setIsDeleteOpen}
-        personId={person.id}
+        ledgerId={ledger.id}
       />
     </>
   );
