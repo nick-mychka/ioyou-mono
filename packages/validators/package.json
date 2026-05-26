@@ -24,6 +24,7 @@
     "@ioyou/eslint-config": "workspace:*",
     "@ioyou/prettier-config": "workspace:*",
     "@ioyou/tsconfig": "workspace:*",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

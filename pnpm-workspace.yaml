@@ -6,26 +6,26 @@ packages:
 catalog:
   "@better-auth/cli": 1.4.0-beta.9
   "@better-auth/expo": 1.4.0-beta.9
-  "@eslint/js": ^9.38.0
-  "@tailwindcss/postcss": ^4.1.16
-  "@tailwindcss/vite": ^4.1.16
-  "@tanstack/react-form": ^1.28.5
-  "@tanstack/react-query": ^5.95.2
+  "@eslint/js": ^10.0.1
+  "@tailwindcss/postcss": ^4.2.2
+  "@tailwindcss/vite": ^4.2.2
+  "@tanstack/react-form": ^1.28.6
+  "@tanstack/react-query": ^5.96.2
   "@trpc/client": ^11.16.0
   "@trpc/server": ^11.16.0
   "@trpc/tanstack-react-query": ^11.16.0
   "@types/node": ^22.18.12
-  "@vitejs/plugin-react": 5.1.0
+  "@vitejs/plugin-react": 6.0.1
   better-auth: 1.4.0-beta.9
   date-fns: ^4.1.0
-  eslint: ^9.38.0
+  eslint: ^10.2.0
   lucide-react: ^1.7.0
-  prettier: ^3.6.2
+  prettier: ^3.8.1
   sonner: ^2.0.7
-  tailwindcss: ^4.1.16
-  typescript: ^5.9.3
+  tailwindcss: ^4.2.2
+  typescript: ^6.0.2
   zod: ^4.3.6
-  vite: 7.1.12
+  vite: 8.0.3
 
 catalogs:
   react19:
@@ -42,8 +42,8 @@ onlyBuiltDependencies:
 
 overrides:
   "@types/minimatch": 5.1.2
-  lightningcss: 1.30.1
-  vite: 7.1.12
+  lightningcss: 1.32.0
+  vite: 8.0.3
 
 publicHoistPattern:
   - "@ianvs/prettier-plugin-sort-imports"
